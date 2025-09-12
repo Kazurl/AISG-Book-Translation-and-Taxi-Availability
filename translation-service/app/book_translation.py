@@ -1,11 +1,21 @@
 import asyncio
 import os
+import redis.asyncio as redis
 from dotenv import load_dotenv
 from openai import OpenAI
-from rate_limiter import RateLimiter
 from transformers import AutoTokenizer
+from typing import Tuple
 
 from file_management import BookInfo, read_file_in_local_storage
+from job_handler import (
+    cancel_translation_job,
+    complete_translation_job,
+    create_job_id,
+    get_todo_job_chunks,
+    start_translation_job,
+    update_translation_job_progress
+)
+from rate_limiter import RateLimiter
 
 load_dotenv()
 
@@ -58,6 +68,25 @@ async def interpret_book_info(chunk: str, language: str) -> str:
     return completion.choices[0].message.content
 
 
+async def extract_book_info(chunk: str, language: str, rl: RateLimiter) -> BookInfo:
+    await rl.acquire()
+    res = BookInfo()
+
+    for _ in range(2):
+        try:
+            book_info = await interpret_book_info(chunk, language)
+            print(book_info)
+            book_info = book_info.strip("[]").split(",")
+            print(book_info)
+            print(len(book_info))
+            res.set_book_info(book_info)
+            return res
+        except Exception as e:
+            await asyncio.sleep(7)
+
+    return res
+
+
 async def translate_chunk(chunk: str, language: str) -> str:
     client = OpenAI(
         api_key=SEALION_API_KEY,
@@ -81,55 +110,61 @@ async def translate_chunk(chunk: str, language: str) -> str:
     return completion.choices[0].message.content
 
 
-async def translate_service(book: str, language: str) -> list[bool, BookInfo, str]:
-    # todo: check db if translated book exists
-    # translated book exists in db, return immediately
-
-    
-    # translated book doesn't exist in db yet
-    # todo: set job activate and initialise redis cache
-
-
+async def translate_service(
+    book: str,
+    language: str,
+    email: str,
+    rate_limiter: RateLimiter,
+    redis_server: redis.Redis
+) -> Tuple[bool, BookInfo, str]:  
     chunks = chunk_by_tokens(book)
-    rate_limiter = RateLimiter(API_RATE_LIMIT, refill_rate)
-    translations = [None] * len(chunks)
+
     book_info = await extract_book_info(chunks[0], language, rate_limiter)
     attempted_translation = read_file_in_local_storage(book_info.origin_title, book_info.origin_author)
+    # translated book exists in db, return immediately
     if attempted_translation:
-        return [False, book_info, attempted_translation]
+        return False, book_info, attempted_translation
 
     async def worker(i: int, chunk: str) -> None:
         await rate_limiter.acquire()
         for _ in range(2):  # retry once
             try:
-                translations[i] = await translate_chunk(chunk, language)
+                translation = await translate_chunk(chunk, language)
+                await update_translation_job_progress(
+                    redis_server, job_id, i, translation, len(chunks)
+                )
                 break
             except Exception as e:
                 await asyncio.sleep(7)
-        else:
-            translations[i] = "[TRANSLATION FAILED]"
 
-    # process with rate-limiter
-    await asyncio.gather(*[worker(i, chunk) for i, chunk in enumerate(chunks)])
-    
-    cleaned_translations = [t.strip() for t in translations]
-    return [True, book_info, "\n\n".join(cleaned_translations)]
+    # set job active and initialise redis cache
+    job_id = create_job_id(book_info.origin_title, book_info.origin_author)
+    try:
+        if not await start_translation_job(redis_server, email, job_id):
+            raise Exception("Ongoing job already in progress!")
+        # process with rate-limiter
+        await asyncio.gather(*[worker(i, chunk) for i, chunk in enumerate(chunks)])
+
+        # once all chunks processed, return
+        remaining_chunk_indices = await get_todo_job_chunks(redis_server, job_id, len(chunks))
+        if not remaining_chunk_indices:
+            translations = await complete_translation_job(redis_server, email, job_id)
+            cleaned_translations = [t.strip() for t in translations]
+            return True, book_info, "\n\n".join(cleaned_translations)
+    except Exception as e:
+        print(f"An error has occured in book_translation: {e}")
+        return False, None, None
 
 
-async def extract_book_info(chunk: str, language: str, rl: RateLimiter) -> BookInfo:
-    await rl.acquire()
-    res = BookInfo()
+async def cancel_translation_service(
+    book: str,
+    language: str,
+    email: str,
+    rate_limiter: RateLimiter,
+    redis_server: redis.Redis
+) -> None:
+    chunks = chunk_by_tokens(book)
+    book_info = await extract_book_info(chunks[0], language, rate_limiter)
+    job_id = create_job_id(book_info.origin_title, book_info.origin_author)
 
-    for _ in range(2):
-        try:
-            book_info = await interpret_book_info(chunk, language)
-            print(book_info)
-            book_info = book_info.strip("[]").split(",")
-            print(book_info)
-            print(len(book_info))
-            res.set_book_info(book_info)
-            return res
-        except Exception as e:
-            await asyncio.sleep(7)
-
-    return res
+    cancel_translation_job(redis_server, email, job_id)

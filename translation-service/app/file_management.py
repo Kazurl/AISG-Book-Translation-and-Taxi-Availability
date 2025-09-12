@@ -3,7 +3,7 @@ import re
 import time
 from pathlib import Path
 
-from utils.str_utils import sanitize_filename
+from utils.str_utils import generate_file_name, generate_file_regex_pattern
 
 TRANSLATED_BOOK_CACHE = "translated_books_cache"
 
@@ -37,27 +37,26 @@ def read_file_in_local_storage(
 ) -> str:
     # ensure dir exists
     os.makedirs(folder, exist_ok=True)
-    ts = time.strftime("%Y%m%d_%H%M%S")
 
     # find file
     try:
         if origin_title and origin_author:
-            file_name = rf"^{origin_title}___{origin_author}___.*"
+            regex_pattern = generate_file_regex_pattern(origin_title, origin_author)
         else:
             raise ValueError("Missing Title and Author")
         
         text = ""
         for entry in os.scandir(folder):
-            if re.search(file_name, entry.name):
-                new_file_name = entry.name.replace(r"{8}[0-9]_{6}[0-9]", ts)
-                os.rename(entry.name, new_file_name)
+            print(f"Current read file: {entry.path}")
+            if regex_pattern.match(entry.name):
+                os.utime(entry.path)
                 LRU_update(folder)
-                with os.open(new_file_name, "w", encoding="utf-8") as f:
+                with open(entry.path, "r", encoding="utf-8") as f:
                     text = f.read()
                 break
         return text
     except Exception as e:
-        print(f"An error has occured: {e}")
+        print(f"An error has occured in file_management: {e}")
 
 
 def write_file_to_local_storage(
@@ -70,19 +69,19 @@ def write_file_to_local_storage(
 ) -> str:
     # ensure dir exists
     os.makedirs(folder, exist_ok=True)
-    ts = time.strftime("%Y%m%d_%H%M%S")
 
     # filename sanitized and truncated to avoid OS limits
-    file_name = f"{sanitize_filename(origin_title)[:40]}___{sanitize_filename(origin_author)[:30]}___{sanitize_filename(trans_title)[:40]}___{sanitize_filename(trans_author)[:30]}___{ts}.txt"
+    file_name = generate_file_name(origin_title, origin_author, trans_title, trans_author)
     path = Path(folder) / file_name
 
     with open(path, "w", encoding="utf-8") as f:
         f.write(translated_text)
     
     # Maintain only the LRU top 10
-    LRU_update(folder, n=10)
+    os.utime(path)
+    LRU_update(folder)
 
-    return path
+    return str(path)
 
 
 def LRU_update(folder: str, n: int = 10) -> None:
