@@ -1,0 +1,54 @@
+{
+    "id":"swiss-ai/Apertus-70B-Instruct-2509",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"swiss-ai/Apertus-8B-Instruct-2509",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Llama-SEA-LION-v3.5-8B-R",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Llama-SEA-Guard-Prompt-v1",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Gemma-SEA-LION-v4-27B-IT",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"BAAI/bge-m3",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Gemma-SEA-LION-v3-9B-IT",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Llama-SEA-LION-v3.5-70B-R",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+},
+{
+    "id":"aisingapore/Llama-SEA-LION-v3-70B-IT",
+    "object":"model",
+    "created":1677610602,
+    "owned_by":"openai"
+}

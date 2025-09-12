@@ -1,0 +1,8 @@
+===== SUMMARY =====
+{'max_tokens': 2000, 'num_chunks': 120, 'total_time': 784.8878212079871, 'avg_chunk_time': 9.500792143441505, 'max_chunk_time': 10.872175124997739, 'min_chunk_time': 4.100678791990504}
+{'max_tokens': 4000, 'num_chunks': 59, 'total_time': 415.89343241701135, 'avg_chunk_time': 17.77251702972877, 'max_chunk_time': 20.152900375018362, 'min_chunk_time': 9.628393749997485}
+{'max_tokens': 8000, 'num_chunks': 29, 'total_time': 230.82599579100497, 'avg_chunk_time': 34.606417606315766, 'max_chunk_time': 38.050136833044235, 'min_chunk_time': 22.598351209016982}
+{'max_tokens': 16000, 'num_chunks': 15, 'total_time': 204.35711241600802, 'avg_chunk_time': 65.50609586399514, 'max_chunk_time': 73.49929374997737, 'min_chunk_time': 20.288314041972626}
+{'max_tokens': 32000, 'num_chunks': 8, 'total_time': 143.42863045900594, 'avg_chunk_time': 121.51147641662101, 'max_chunk_time': 143.4277324579889, 'min_chunk_time': 18.531882833049167}
+{'max_tokens': 64000, 'num_chunks': 4, 'total_time': 279.365023499995, 'avg_chunk_time': 241.5233911669784, 'max_chunk_time': 279.36438975000056, 'min_chunk_time': 143.2742406670004}
+{'max_tokens': 128000, 'num_chunks': 2, 'total_time': 542.6965066249832, 'avg_chunk_time': 481.54711727102404, 'max_chunk_time': 542.6956069580046, 'min_chunk_time': 420.3986275840434}
