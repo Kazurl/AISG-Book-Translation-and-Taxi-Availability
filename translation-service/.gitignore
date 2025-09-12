@@ -1,0 +1,29 @@
+# vscode
+.vscode/
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.pytest_cache
+venv/
+.venv/
+venv_0.1/
+.env
+test.py
+
+# Logs and temps
+*.log
+*.tmp
+
+# Sys files
+.DS_Store
+Thumbs.db
+
+# Extras
+test_texts/
+translated_books_cache/
