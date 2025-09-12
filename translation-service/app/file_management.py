@@ -3,6 +3,8 @@ import re
 import time
 from pathlib import Path
 
+from utils.str_utils import sanitize_filename
+
 TRANSLATED_BOOK_CACHE = "translated_books_cache"
 
 class BookInfo:
@@ -26,10 +28,6 @@ class BookInfo:
         self.origin_author = fields[1]
         self.trans_title = fields[2]
         self.trans_author = fields[3]
-
-
-def sanitize_filename(file: str) -> str:
-    return re.sub(r"[^\w\d\-_.]", "_", file)
 
 
 def read_file_in_local_storage(

@@ -10,7 +10,7 @@ from file_management import BookInfo, read_file_in_local_storage
 load_dotenv()
 
 SEALION_API_KEY = os.getenv("SEALION_API_KEY")
-SEALION_API_URL = "https://api.sea-lion.ai/v1"
+SEALION_API_URL = os.getenv("SEALION_API_URL")
 API_RATE_LIMIT = 10
 refill_rate = 60
 MAX_TOKENS = 2000

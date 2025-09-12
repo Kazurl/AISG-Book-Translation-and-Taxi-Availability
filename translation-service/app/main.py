@@ -1,11 +1,19 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pathlib import Path
 from pydantic import BaseModel
 
 from book_translation import translate_service
 from file_management import write_file_to_local_storage
+from job_handler import init_redis
+
+load_dotenv()
+
+redis_port = os.getenv("REDIS_PORT")
 
 app = FastAPI()
+redis_server = init_redis(redis_port)
 
 class TranslateRequest(BaseModel):
     book: str
