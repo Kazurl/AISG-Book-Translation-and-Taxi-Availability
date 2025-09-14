@@ -1,11 +1,18 @@
-import { Button } from "./components/ui/button";
+import { Route, Routes } from "react-router-dom";
+
+import HomePage from "./pages/home/HomePage";
+import TranslationPage from "./pages/translation/TranslationPage";
+import TranslationProgressPage from "./pages/translation/TranslationProgressPage";
 
 function App() {
 
   return (
     <>
-      <h1 className="text-red-500 text-5xl">Hello World</h1>
-      <Button variant={'outline'}>Button</Button>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/translate" element={<TranslationPage />} />
+        <Route path="/translation_progress" element={<TranslationProgressPage />} />
+      </Routes>
     </>
   );
 }

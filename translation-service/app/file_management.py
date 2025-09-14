@@ -47,7 +47,6 @@ def read_file_in_local_storage(
         
         text = ""
         for entry in os.scandir(folder):
-            print(f"Current read file: {entry.path}")
             if regex_pattern.match(entry.name):
                 os.utime(entry.path)
                 LRU_update(folder)
@@ -67,8 +66,10 @@ def write_file_to_local_storage(
     trans_author: str,
     folder: str = TRANSLATED_BOOK_CACHE
 ) -> str:
+    print(f"[DEBUG] write_file_to_local_storage: cwd={os.getcwd()}")  # todo: remove when done
     # ensure dir exists
     os.makedirs(folder, exist_ok=True)
+    print(f"Writing to path: {os.path.abspath(folder)}")  # todo: remove when done
 
     # filename sanitized and truncated to avoid OS limits
     file_name = generate_file_name(origin_title, origin_author, trans_title, trans_author)
@@ -76,7 +77,7 @@ def write_file_to_local_storage(
 
     with open(path, "w", encoding="utf-8") as f:
         f.write(translated_text)
-    
+    print(f"[WRITE] File written!")  # todo: remove when done
     # Maintain only the LRU top 10
     os.utime(path)
     LRU_update(folder)
