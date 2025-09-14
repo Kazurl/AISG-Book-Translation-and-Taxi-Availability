@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import traceback  # todo: remove when done
 
-from book_translation import (
+from app.book_translation import (
     cancel_translation_service,
     chunk_by_tokens,
     extract_book_info,
@@ -13,16 +13,16 @@ from book_translation import (
     fetch_last_user_job,
     translate_service
 )
-from file_management import read_file_in_local_storage, write_file_to_local_storage
-from job_handler import (
+from app.file_management import read_file_in_local_storage, write_file_to_local_storage
+from app.job_handler import (
     init_redis,
     check_job_status,
     create_job_id,
     JobCompletion,
     JobStatus
 )
-from rate_limiter import RateLimiter
-from schema import CancelRequest, TranslateRequest
+from app.rate_limiter import RateLimiter
+from app.schema import CancelRequest, TranslateRequest
 
 load_dotenv()
 

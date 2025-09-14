@@ -8,12 +8,12 @@ from openai import OpenAI
 from transformers import AutoTokenizer
 from typing import Tuple
 
-from file_management import (
+from app.file_management import (
     BookInfo,
     read_file_in_local_storage,
     write_file_to_local_storage
 )
-from job_handler import (
+from app.job_handler import (
     cancel_translation_job,
     complete_translation_job,
     fetch_saved_chunks,
@@ -22,7 +22,7 @@ from job_handler import (
     start_translation_job,
     update_translation_job_progress
 )
-from rate_limiter import RateLimiter
+from app.rate_limiter import RateLimiter
 
 load_dotenv()
 

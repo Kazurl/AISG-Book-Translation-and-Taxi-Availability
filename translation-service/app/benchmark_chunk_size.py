@@ -1,7 +1,7 @@
 import asyncio
 import time
 import random
-from book_translation import chunk_by_tokens, translate_chunk
+from app.book_translation import chunk_by_tokens, translate_chunk
 from pathlib import Path
 
 # Use your realistic input

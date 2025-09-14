@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translation-service
+spec:
+  template:
+    metadata:
+      labels:
+        app: translation-service
+    spec:
+      containers:
+      - name: translation-service
+        image: bzh827/aisg-fastapi-translation:latest
+        ports:
+        - containerPort: 8000
+        env:
+        # ...env vars with ConfigMap/Secret
+  selector:
+    matchLabels:
+      app: translation-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: translation-service
+spec:
+  selector:
+    app: translation-service
+  ports:
+    - port: 8000
+      targetPort: 8000

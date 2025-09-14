@@ -3,7 +3,7 @@ import { axiosInstance } from "../../lib/axios";
 import { useTranslationStore } from "../../stores/useTranslationStore";
 import { Button } from "@/components/ui/button";
 import FileUpload from "../../components/FileUpload";
-import type { TranslateJobRequest } from "../../types";
+//import type { TranslateJobRequest } from "../../types";
 
 export default function TranslationPage() {
   
@@ -13,10 +13,10 @@ export default function TranslationPage() {
     const [language, setLanguage] = useState("chinese");
     const [loading, setLoading] = useState(false);
 
-    const setMeta = useTranslationStore(s => s.setMetaData);
-    const setJobId = useTranslationStore(s => s.setJobId);
+    //const setMeta = useTranslationStore(s => s.setMetaData);
+    //const setJobId = useTranslationStore(s => s.setJobId);
     const setJobStatus = useTranslationStore(s => s.setJobStatus);
-    const setProgress = useTranslationStore(s => s.setProgress);
+    //const setProgress = useTranslationStore(s => s.setProgress);
     const [result, setResult] = useState<string | null>(null);
     
 /**

@@ -2,7 +2,7 @@ import hashlib
 import redis.asyncio as redis
 from enum import Enum
 
-from utils.str_utils import canonize_str
+from app.utils.str_utils import canonize_str
 
 class JobStatus(Enum):
     NO_JOB = 0

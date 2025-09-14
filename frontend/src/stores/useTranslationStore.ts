@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { TranslateJobRequest, TranslationProgressResult, JobStatus } from '../types/index';
+import type { TranslationProgressResult, JobStatus } from '../types/index';
 
 /**
  * The ID of the current translation job.

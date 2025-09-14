@@ -3,7 +3,7 @@ import re
 import time
 from pathlib import Path
 
-from utils.str_utils import generate_file_name, generate_file_regex_pattern
+from app.utils.str_utils import generate_file_name, generate_file_regex_pattern
 
 TRANSLATED_BOOK_CACHE = "translated_books_cache"
 

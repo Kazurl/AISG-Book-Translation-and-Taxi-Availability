@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    container_name: AISG-mern-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build: ./frontend
+    container_name: AISG-mern-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  translation-service:
+    build: ./translation-service
+    container_name: fastapi-translation
+    env_file:
+      - ./translation-service/app/.env
+    ports:
+      - "8000:8000"
