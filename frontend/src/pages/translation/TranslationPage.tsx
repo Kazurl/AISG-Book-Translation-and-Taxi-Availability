@@ -38,7 +38,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             email,
         };
         try {
-        const res = await axiosInstance.post("/translate_book", meta);
+        const res = await axiosInstance.post("/translation/translate_book", meta);
         //   if (res.data.job_id) {
         //     setJobId(res.data.job_id);
         //     // store meta for polling

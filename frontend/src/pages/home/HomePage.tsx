@@ -29,6 +29,16 @@ export default function HomePage() {
             Upload or paste your book and get fast, multi-language translations.
           </span>
         </Link>
+        <Link
+          to="/taxis-availability"
+          className="flex flex-col items-center bg-white p-6 rounded-lg shadow-md transition hover:bg-yellow-50 w-60"
+        >
+          <span className="w-12 h-12 text-yellow-500 mb-2 flex items-center justify-center text-3xl">🚕</span>
+          <span className="text-xl font-semibold mb-1">Taxi Hotspots</span>
+          <span className="text-gray-600 text-sm text-center">
+            Live SG taxi cluster map: see where cabs are most available, updated in real time.
+          </span>
+        </Link>
         {/* Placeholder for other services */}
         <div className="flex flex-col items-center bg-white opacity-50 p-6 rounded-lg shadow-md w-60">
           <span className="w-12 h-12 flex mb-2 items-center justify-center text-gray-300">

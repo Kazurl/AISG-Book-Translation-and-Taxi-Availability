@@ -14,7 +14,7 @@ export default function TranslationProgressPage() {
         const poll = async () => {
             const { origin_title, origin_author, email, language } = meta;
             try {
-                const { data } = await axiosInstance.get("/translation_progress", {
+                const { data } = await axiosInstance.get("/translation/translation_progress", {
                     params: { origin_title, origin_author, email, language },
                 });
                 setProgress(data);

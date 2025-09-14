@@ -29,3 +29,11 @@ export interface TranslationProgressResult {
   result?: string | null;
   error?: string;
 }
+
+export interface TaxiArea {
+    lat: number;
+    lon: number;
+    count: number;
+    address: string;
+    googleMapsLink: string;
+};

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 
+import taxiAvailabilityRoutes from "./routes/taxiAvailability.route.js";
 import translationRoutes from "./routes/translation.route.js";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // routes
 app.use("/api/translation", translationRoutes);
+app.use("/api/taxi-availability", taxiAvailabilityRoutes);
 
 
 app.use((err, req, res, next) => {  // error handler middleware

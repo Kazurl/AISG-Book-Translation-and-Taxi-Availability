@@ -9,7 +9,7 @@ import { FAST_API_URL, forward } from "../utils/fastapi.utils.js";
   * @param {*} res
   * @param {*} next
   */
- const translateBook = (req, res, next) => {
+export const translateBook = (req, res, next) => {
     
     try {
         forward(res, axios.post(`${FAST_API_URL}/translate_book`, req.body));
@@ -26,7 +26,7 @@ import { FAST_API_URL, forward } from "../utils/fastapi.utils.js";
  * @param {*} res
  * @param {*} next
  */
-const translateBookFile = async (req, res, next) => {
+export const translateBookFile = async (req, res, next) => {
     
     try {
         const bookText = req.file.buffer.toString("utf-8");
@@ -51,7 +51,7 @@ const translateBookFile = async (req, res, next) => {
  * @param {*} res
  * @param {*} next
  */
-const getTranslationProgress = (req, res, next) => {
+export const getTranslationProgress = (req, res, next) => {
     
     try {
         forward(res, axios.get(`${FAST_API_URL}/translation_progress`, {
@@ -70,7 +70,7 @@ const getTranslationProgress = (req, res, next) => {
  * @param {*} res
  * @param {*} next
  */
-const cancelTranslation = (req, res, next) => {
+export const cancelTranslation = (req, res, next) => {
     
     try {
         forward(res, axios.post(`${FAST_API_URL}/cancel_translation`, req.body));
@@ -87,7 +87,7 @@ const cancelTranslation = (req, res, next) => {
  * @param {*} res
  * @param {*} next
  */
-const getLastJob = async (req, res, next) => {
+export const getLastJob = async (req, res, next) => {
     
     try {
         forward(res, axios.get(`${FAST_API_URL}/last_job`, {
