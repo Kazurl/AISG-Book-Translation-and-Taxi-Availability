@@ -30,7 +30,7 @@ export default function HomePage() {
           </span>
         </Link>
         <Link
-          to="/taxis-availability"
+          to="/taxi-availability"
           className="flex flex-col items-center bg-white p-6 rounded-lg shadow-md transition hover:bg-yellow-50 w-60"
         >
           <span className="w-12 h-12 text-yellow-500 mb-2 flex items-center justify-center text-3xl">🚕</span>
