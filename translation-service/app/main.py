@@ -46,12 +46,12 @@ app.add_middleware(
 
 
 # routes
-@app.get("/")
-async def root():
-    """
-        Health check endpoint.
-    """
-    return {"service": f"Translation Service is running!"}
+# @app.get("/")
+# async def root():
+#     """
+#         Health check endpoint.
+#     """
+#     return {"service": f"Translation Service is running!"}
 
 
 from fastapi.responses import JSONResponse  # todo: remove when done
@@ -205,43 +205,43 @@ async def last_job(email: str):
         raise HTTPException(status_code=500, detail=str(e))
     
 
-# @app.get("/")
-# async def translate_book():
-#     main_loc = Path(__file__).parent
-#     path = main_loc / "test_texts/text2.txt"
-#     email = "john123@email.com"
-#     try:
-#         with open(path, "r", encoding="utf-8") as f:
-#             text = f.read()
-#             chunks = chunk_by_tokens(text)
-#             book_info = await extract_book_info(chunks[0], "chinese", rate_limiter)
-#             job_id = create_job_id(book_info.origin_title, book_info.origin_author)
+@app.get("/")
+async def translate_book():
+    main_loc = Path(__file__).parent
+    path = main_loc / "test_texts/text2.txt"
+    email = "john123@email.com"
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            text = f.read()
+            chunks = chunk_by_tokens(text)
+            book_info = await extract_book_info(chunks[0], "chinese", rate_limiter)
+            job_id = create_job_id(book_info.origin_title, book_info.origin_author)
 
-#             job_status = await check_job_status(redis_server, email, job_id)
-#             if job_status is None:
-#                 pass
-#             elif job_status:
-#                 attempted_translation = read_file_in_local_storage(
-#                                             book_info.origin_title,
-#                                             book_info.origin_author
-#                                         )
-#                 if attempted_translation:
-#                     return attempted_translation
-#                 else:
-#                     return "Job is in progress."
-#             else:
-#                 raise HTTPException(status_code=409, detail="Another translation already in progress.")
+            job_status = await check_job_status(redis_server, email, job_id)
+            if job_status is None:
+                pass
+            elif job_status:
+                attempted_translation = read_file_in_local_storage(
+                                            book_info.origin_title,
+                                            book_info.origin_author
+                                        )
+                if attempted_translation:
+                    return attempted_translation
+                else:
+                    return "Job is in progress."
+            else:
+                raise HTTPException(status_code=409, detail="Another translation already in progress.")
 
-#             success, translated = await translate_service(
-#                                                                 job_id,
-#                                                                 email,
-#                                                                 "chinese",
-#                                                                 book_info,
-#                                                                 chunks,
-#                                                                 rate_limiter,
-#                                                                 redis_server
-#                                                             )
+            success, translated = await translate_service(
+                                                                job_id,
+                                                                email,
+                                                                "chinese",
+                                                                book_info,
+                                                                chunks,
+                                                                rate_limiter,
+                                                                redis_server
+                                                            )
         
-#         return translated
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
+        return translated
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
